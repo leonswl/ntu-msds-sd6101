@@ -1,7 +1,10 @@
 # ntu-msds-sd6101
 Project repository for module SD6101 (Data Science Thinking) under Masters of Science in Data Science (NTU)
 
-![https://img.shields.io/badge/python-3.10.7-blue](https://www.python.org/downloads/release/python-3107/)
+<p align="center">
+    <a href="https://www.python.org/downloads/release/python-3107/" alt="Contributors">
+        <img src="https://img.shields.io/badge/python-3.10.7-blue"/></a>
+</p>
 
 **Table of Contents**
 - [ntu-msds-sd6101](#ntu-msds-sd6101)
@@ -32,20 +35,19 @@ For more details related to column attributes, refer to the [dataset metadata](a
 1. Create a new branch using `git checkout -b <branch-name>`
 1. Merge the main branch to your working branch to keep your branch up to date with the latest changes `git merge main`
 1. Once you have saved your changes, add -> commit -> push your changes to remote branch 
-```
-# add all changes
-git add . 
+    ```
+    # add all changes
+    git add . 
 
-# commit your changes with a commit message
-git commit -m "<your commit message>"
+    # commit your changes with a commit message
+    git commit -m "<your commit message>"
 
-# push your changes to remote
-git push
+    # push your changes to remote
+    git push
 
-# you will be prompted to set a remote upstream if this is your first time pushing changes after creating the new branch
-git push --set-upstream origin <branch-name>
-
-```
+    # you will be prompted to set a remote upstream if this is your first time pushing changes after creating the new branch
+    git push --set-upstream origin <branch-name>
+    ```
 1. Create a Pull Request to merge your changes to the main branch. 
 1. Repeat step 2 to 6 for subsequent contributions
 
