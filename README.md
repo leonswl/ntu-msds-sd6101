@@ -1,22 +1,34 @@
 # ntu-msds-sd6101
-Project repository for module SD6101 (Data Science Thinking) under Masters of Science in Data Science (NTU)
 
 <p align="center">
     <a href="https://www.python.org/downloads/release/python-3107/" alt="Contributors">
         <img src="https://img.shields.io/badge/python-3.10.7-blue"/></a>
 </p>
 
+Project repository for module SD6101 (Data Science Thinking) under Masters of Science in Data Science (NTU).
+
 **Table of Contents**
 - [ntu-msds-sd6101](#ntu-msds-sd6101)
   - [Directory](#directory)
+  - [Data Source](#data-source)
   - [Data Preparation](#data-preparation)
+  - [Data Modelling \& Analysis](#data-modelling--analysis)
   - [Contributing](#contributing)
   - [Installation \& Usage](#installation--usage)
 
 ## Directory
-- [artifacts](artifacts/): raw and persisted data artifacts
+- [artifacts](artifacts): raw and persisted data artifacts
 - [dependencies](requirements.txt): python dependencies
 - [python prepare script](prepare.py): python script to perform data preparation on raw datasets
+
+## Data Source
+-  Student Performance Data Set
+   -  Obtained from [UCI Machine Learning - Student Performance](https://archive.ics.uci.edu/ml/datasets/student+performance)
+   -  For more details related to column attributes, refer to the [dataset metadata](artifacts/student.txt).
+ 
+- Higher Education Students Performance Evaluation Data Set
+  - Obtained from [UCI Machine Learning - Higher Education Students Performance ](https://archive.ics.uci.edu/ml/datasets/Higher+Education+Students+Performance+Evaluation+Dataset)
+  - For more details related to column attributes, refer to the [dataset metadata](artifacts/higher-education-student.txt).
 
 ## Data Preparation
 
@@ -24,9 +36,12 @@ There are 647 students in the math class, and 395 students in the portuguese cla
 
 Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"
 
+After data preparation, data will be persisted in [artifacts](artifacts) as new artifacts.
 
-**About the dataset**
-For more details related to column attributes, refer to the [dataset metadata](artifacts/student.txt).
+## Data Modelling & Analysis
+
+
+
 
 ## Contributing
 

@@ -1,0 +1,5 @@
+prepare:
+  artifacts_path: "artifacts"
+  higher_edu_student_file: "higher-education-student.csv"
+  middle_student_mat_file: "middle-student-mat.csv"
+  middle_student_por_file: "middle-student-por.csv"

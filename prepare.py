@@ -1,51 +1,53 @@
 # prepare data for eda
 
 import pandas as pd
+import yaml
+from utility import rename_higher_edu_columns, merge_middle_students
 
-
-# import files as pandas dataframe
-
-df_higher_edu_student = pd.read_csv('artifacts/higher-education-student.csv',sep=';')
-df_middle_student_mat = pd.read_csv('artifacts/middle-student-mat.csv',sep=';')
-df_middle_student_por = pd.read_csv('artifacts/middle-student-por.csv',sep=';')
-
-# 
-import pandas as pd
-
-def rename_higher_edu_columns(df):
+def prepare() -> None:
     """
-    Renames the columns of a given DataFrame based on a text file
-    containing a list of column names.
+    Load data from CSV files, rename columns and merge DataFrames, and persist new CSV files.
+
+    This function loads configuration details from a YAML file called "config.yml". The configuration file should contain
+    information about the file paths for the input data files and the output files to be saved.
+
+    The function reads in the data from the input files as pandas DataFrames, calls two helper functions to rename
+    columns and merge DataFrames, and then persists the resulting DataFrames as CSV files.
 
     Args:
-        df (pandas.DataFrame): The DataFrame whose columns need to be renamed.
+        None
 
     Returns:
-        pandas.DataFrame: The DataFrame with renamed columns.
+        None
     """
-    
-    # Read the text file with the list of column names
-    df_txt = pd.read_fwf('artifacts/higher-education-student.txt')
-    
-    # Make a copy of the DataFrame and drop the first row (which contains the old column names)
-    df_txt = df_txt.copy()[1:]
-    
-    # Create a list of the new column names based on the values in the text file
-    column_lst = []
-    for index, row in df_txt.iterrows():
-        split_str = str(row.values).split(" ")
-        column_lst.append(split_str[1])
+    # Load configuration details from config.yml file
+    with open("config.yml", encoding="utf-8", mode="r") as ymlfile:
+        cfg = yaml.load(ymlfile,Loader=yaml.Loader)
+        higher_edu_student_file = cfg["prepare"]["higher_edu_student_file"]
+        middle_student_mat_file = cfg["prepare"]["middle_student_mat_file"]
+        middle_student_por_file = cfg["prepare"]["middle_student_por_file"]
+        artifacts_path = cfg["prepare"]["artifacts_path"]
 
-    # Drop the 'STUDENT ID' column from the DataFrame
-    df_dropped = df.drop(['STUDENT ID'], axis=1)
+    # Import data as pandas DataFrames
+    df_higher_edu_student = pd.read_csv(f'{artifacts_path}/{higher_edu_student_file}',sep=';')
+    df_middle_student_mat = pd.read_csv(f'{artifacts_path}/{middle_student_mat_file}',sep=';')
+    df_middle_student_por = pd.read_csv(f'{artifacts_path}/{middle_student_por_file}',sep=';')
 
-    # Rename the columns of the DataFrame with the new column names
-    df_dropped.columns = column_lst
+    # Rename columns in the higher education student data frame to readable format
+    df_higher_edu_student_new = rename_higher_edu_columns(df_higher_edu_student)
 
-    # Rename specific columns with new names
-    df_dropped.rename(columns={'Course': 'Course_id', 'OUTPUT': 'Grade'}, inplace=True)
+    # Merge middle school student data frames
+    df_middle_students = merge_middle_students(df_middle_student_por, df_middle_student_mat)
 
-    return df_dropped
+    # Persist new CSV files
+    df_higher_edu_student_new.to_csv(f"{artifacts_path}/higher_edu_student_new.csv")
+    df_middle_students.to_csv(f"{artifacts_path}/middle_students_new.csv")
 
+    print("""
+    --------------------------------------------
+    Successfully persisted data as new artifacts
+    """)
 
-df_higher_edu_student_new = rename_higher_edu_columns(df_higher_edu_student)
+if __name__ == "__main__":
+    # Call prepare function when script is run as main
+    prepare()
