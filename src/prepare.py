@@ -27,6 +27,7 @@ def prepare() -> None:
         middle_student_mat_file = cfg["prepare"]["middle_student_mat_file"]
         middle_student_por_file = cfg["prepare"]["middle_student_por_file"]
         artifacts_path = cfg["prepare"]["artifacts_path"]
+        txt_path = cfg["prepare"]["txt_path"]
 
     # Import data as pandas DataFrames
     df_higher_edu_student = pd.read_csv(f'{artifacts_path}/{higher_edu_student_file}',sep=';')
@@ -34,7 +35,7 @@ def prepare() -> None:
     df_middle_student_por = pd.read_csv(f'{artifacts_path}/{middle_student_por_file}',sep=';')
 
     # Rename columns in the higher education student data frame to readable format
-    df_higher_edu_student_new = rename_higher_edu_columns(df_higher_edu_student)
+    df_higher_edu_student_new = rename_higher_edu_columns(df_higher_edu_student, txt_path)
 
     # Merge middle school student data frames
     df_middle_students = merge_middle_students(df_middle_student_por, df_middle_student_mat)
