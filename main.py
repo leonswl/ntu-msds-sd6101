@@ -42,12 +42,19 @@ def main():
     path_filename = f"{artifacts_path}/{middle_student_artifact}"
     df = load_parquet(path_filename=path_filename).iloc[:,1:]
 
+    
+
+    y_vars = ['G1_por', 'G2_por', 'G3_por', 'G1_mat', 'G2_mat', 'G3_mat']
+    x_vars = [col for col in st.session_state.df.columns if col not in y_vars]
+
     if "df" not in st.session_state:
         st.session_state.df = df
 
-    x_vars = st.session_state.df.columns[:-3]
-    y_vars = st.session_state.df.columns[-3:]
+    if "y_vars" not in st.session_state:
+        st.session_state.y_vars = y_vars
 
+    if "x_vars" not in st.session_state:
+        st.session_state.x_vars = x_vars
 
     with st.sidebar:
 
