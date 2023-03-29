@@ -32,7 +32,7 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
 
 ## Data Preparation
 
-There are 647 students in the math class, and 395 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 682 students enrolled in both classes. 
+There are 647 students in the math class, and 395 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 382 students enrolled in both classes. 
 
 Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"
 
