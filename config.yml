@@ -1,5 +1,10 @@
 prepare:
   artifacts_path: "artifacts"
-  higher_edu_student_file: "higher-education-student.csv"
-  middle_student_mat_file: "middle-student-mat.csv"
-  middle_student_por_file: "middle-student-por.csv"
+  higher_edu_student_file: "raw/higher-education-student.csv"
+  middle_student_mat_file: "raw/middle-student-mat.csv"
+  middle_student_por_file: "raw/middle-student-por.csv"
+  txt_path: 'artifacts/raw/higher-education-student.txt'
+
+eda:
+  artifacts_path: "artifacts"
+  middle_student_artifact: "middle_students_new.csv"

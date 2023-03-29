@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-def rename_higher_edu_columns(df):
+def rename_higher_edu_columns(df, txt_path):
     """
     Renames the columns of a given DataFrame based on a text file
     containing a list of column names.
@@ -15,7 +15,7 @@ def rename_higher_edu_columns(df):
     """
     
     # Read the text file with the list of column names
-    df_txt = pd.read_fwf('artifacts/higher-education-student.txt')
+    df_txt = pd.read_fwf(txt_path)
     
     # Make a copy of the DataFrame and drop the first row (which contains the old column names)
     df_txt = df_txt.copy()[1:]
