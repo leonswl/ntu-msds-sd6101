@@ -148,8 +148,8 @@ def relationship():
                 df_students,
                 x=xaxis_discrete_selection,
                 y=yaxis_selection,
+                points='all',
                 box=True,
-                color=xaxis_discrete_selection
             ).update_layout(
                 xaxis_title= xaxis_discrete_selection,
                 yaxis_title= yaxis_selection
@@ -160,13 +160,16 @@ def relationship():
         else:
             bi_values = df_students[discrete_bivals_selection].unique()
             fig_discrete_split = go.Figure()
+            
             fig_discrete_split.add_trace(go.Violin
                                                 (x=df_students[xaxis_discrete_selection][df_students[discrete_bivals_selection]==bi_values[0]],
                                                 y=df_students[yaxis_selection][df_students[discrete_bivals_selection]==bi_values[0]],
                                                 legendgroup='Yes', 
                                                 name=bi_values[0],
                                                 side='negative',
-                                                line_color='lightseagreen'
+                                                line_color='lightseagreen',
+                                                points='all', 
+                                                pointpos=-1.5
                                                 )
                                         )
             fig_discrete_split.add_trace(go.Violin
@@ -175,11 +178,12 @@ def relationship():
                                                 legendgroup='Yes', 
                                                 name=bi_values[1],
                                                 side='positive',
-                                                line_color='mediumpurple'
+                                                line_color='mediumpurple',
+                                                points='all', 
+                                                pointpos=1.5
                                                 )
                                         )
             fig_discrete_split.update_traces(meanline_visible=True)
-            # fig_discrete_split.update_layout(violingap=0, violinmode='overlay')
             st.plotly_chart(fig_discrete_split, use_container_width=True)
 
     with tab2:
@@ -205,17 +209,21 @@ def relationship():
             )
             st.write('You select a bin width of', bin_width)
 
-        fig_cont = px.histogram(
-            df_cont,
+        fig_scatter = px.scatter(
+            df_students,
             x=xaxis_cont_selection,
-            nbins=bin_width,
-            text_auto=True
+            y=yaxis_selection,
+            trendline="ols"
         ).update_layout(
             xaxis_title= xaxis_cont_selection,
-            yaxis_title= "Number of Students"
+            yaxis_title= yaxis_selection
         )
 
-        st.plotly_chart(fig_cont, use_container_width=True)
+        st.plotly_chart(fig_scatter, use_container_width=True)
+
+
+        results = px.get_trendline_results(fig_scatter)
+        st.write(results.px_fit_results.iloc[0].summary())
 
 
 if __name__ == "__main__":
