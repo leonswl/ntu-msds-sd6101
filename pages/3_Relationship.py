@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import plotly.express as px
 import pandas as pd
+import plotly.graph_objects as go
 
 
 # cache data to avoid reloading data
@@ -71,29 +72,7 @@ def split_field_data(df, discrete_field_lst, cont_field_lst):
     # Return a tuple containing the discrete DataFrame and the continuous DataFrame
     return df_discrete, df_cont
 
-def students():
-
-    # set configuration
-    st.set_page_config(
-        page_title="EDA Dashboard of Secondary Education Students in Portugal",
-        page_icon="🏢",
-        layout="wide",
-        initial_sidebar_state="expanded",
-        menu_items={
-            "Report a bug": "https://github.com/leonswl/ntu-msds-sd6101/issues",
-            "About": "Thanks for dropping by!"
-            }
-        )
-    
-    # return to home to fetch data 
-    if (
-        "df" not in st.session_state or 
-        "df_mat" not in st.session_state or 
-        "df_por" not in st.session_state or 
-        "y_vars" not in st.session_state or 
-        "x_vars" not in st.session_state
-    ):
-        switch_page("Main")
+def relationship():
 
     yvars_colnames = [col for col in st.session_state.df_mat.columns if col.startswith("G")]
     xvars_colnames = [col for col in st.session_state.df_mat.columns if col not in yvars_colnames]
@@ -105,6 +84,12 @@ def students():
         course_selection = st.radio(
             label="Select course type",
             options=("Math","Portugese")
+        )
+
+        # RADIO SELECTION - Grade type
+        yaxis_selection = st.radio(
+            label="Select grade type:",
+            options=yvars_colnames
         )
 
         st.write("Source code for the project repository is located at [GitHub](https://github.com/leonswl/ntu-msds-sd6101/tree/main)")
@@ -123,13 +108,20 @@ def students():
     discrete_field_lst, cont_field_lst = split_field_types(st.session_state.df_mat, xvars_colnames)
     df_discrete, df_cont = split_field_data(df_students, discrete_field_lst, cont_field_lst)
 
+    # find discrete columns with only 2 unique values
+    discrete_bivals_colnames = []
+    for col in df_discrete.columns:
+        uniques = df_discrete[col].nunique()
+        if uniques == 2:
+            discrete_bivals_colnames.append(col)
+
     # TABS - DISCRETE VS CONTINUOUS
-    tab1, tab2, tab3 = st.tabs(['Discrete','Continuous','Grades'])
+    tab1, tab2 = st.tabs(['Discrete','Continuous'])
 
     # DISCRETE TAB
     with tab1:
         # COLUMNS - widgets
-        col1, col2 = st.columns([1,3])
+        col1, col2, col3, col4 = st.columns([1,1,1,1])
         with col1:
             # SELECT BOX - Discrete fields selection
             xaxis_discrete_selection = st.selectbox(
@@ -138,18 +130,57 @@ def students():
             )
             st.markdown(f"You selected `{xaxis_discrete_selection}`")
 
-        
-        fig_discrete = px.histogram(
-            df_discrete,
-            x=xaxis_discrete_selection,
-            # nbins=bin_width,
-            text_auto=True
-        ).update_layout(
-            xaxis_title= xaxis_discrete_selection,
-            yaxis_title= "Number of Students"
-        )
+        with col2:
+            split_violin_selection = st.radio(
+                label="Split violin plots:",
+                options=(['No','Yes'])
+            )
+        if split_violin_selection == 'Yes':
+            with col3:
+                discrete_bivals_selection = st.selectbox(
+                    label="Select additional field for",
+                    options=discrete_bivals_colnames
+                )
+                st.markdown(f"You selected `{discrete_bivals_selection}`")
 
-        st.plotly_chart(fig_discrete, use_container_width=True)
+        if split_violin_selection == 'No':
+            fig_discrete = px.violin(
+                df_students,
+                x=xaxis_discrete_selection,
+                y=yaxis_selection,
+                box=True,
+                color=xaxis_discrete_selection
+            ).update_layout(
+                xaxis_title= xaxis_discrete_selection,
+                yaxis_title= yaxis_selection
+            )
+
+            st.plotly_chart(fig_discrete, use_container_width=True)
+
+        else:
+            bi_values = df_students[discrete_bivals_selection].unique()
+            fig_discrete_split = go.Figure()
+            fig_discrete_split.add_trace(go.Violin
+                                                (x=df_students[xaxis_discrete_selection][df_students[discrete_bivals_selection]==bi_values[0]],
+                                                y=df_students[yaxis_selection][df_students[discrete_bivals_selection]==bi_values[0]],
+                                                legendgroup='Yes', 
+                                                name=bi_values[0],
+                                                side='negative',
+                                                line_color='lightseagreen'
+                                                )
+                                        )
+            fig_discrete_split.add_trace(go.Violin
+                                                (x=df_students[xaxis_discrete_selection][df_students[discrete_bivals_selection]==bi_values[1]],
+                                                y=df_students[yaxis_selection][df_students[discrete_bivals_selection]==bi_values[1]],
+                                                legendgroup='Yes', 
+                                                name=bi_values[1],
+                                                side='positive',
+                                                line_color='mediumpurple'
+                                                )
+                                        )
+            fig_discrete_split.update_traces(meanline_visible=True)
+            # fig_discrete_split.update_layout(violingap=0, violinmode='overlay')
+            st.plotly_chart(fig_discrete_split, use_container_width=True)
 
     with tab2:
         # COLUMNS - widgets
@@ -186,50 +217,6 @@ def students():
 
         st.plotly_chart(fig_cont, use_container_width=True)
 
-    with tab3:
 
-        st.markdown(
-        """
-        These grades are related with the course subject, Math or Portuguese:
-        - G1: first period grade (numeric: from 0 to 20)
-        - G2: second period grade (numeric: from 0 to 20)
-        - G3: final grade (numeric: from 0 to 20, output target)
-        """
-        )
-
-        col1, col2, col3 = st.columns([1,1,2])
-        with col1:
-            yaxis_selection = st.selectbox(
-                label="Select field for y-axis:",
-                options=yvars_colnames
-            )
-
-        with col3:
-            # SLIDER - BIN WIDTH
-            bin_width_grades = st.slider(
-                "Select bin width",
-                min_value=5,
-                max_value=50,
-                step=5,
-                value=25,
-                key='grade'
-            )
-            st.write('You select a bin width of', bin_width)
-        # PLOTLY CHART - Histograms of Grades
-        fig_grades = px.histogram(
-            df_students[yvars_colnames],
-            x=yaxis_selection,
-            nbins=bin_width_grades,
-            text_auto=True
-        ).update_layout(
-            xaxis_title= yaxis_selection,
-            yaxis_title= "Number of Students"
-        )
-
-        st.plotly_chart(fig_grades, use_container_width=True)
-
-
-
-    
 if __name__ == "__main__":
-    students()
+    relationship()

@@ -56,7 +56,7 @@ def grades():
             step=10,
             value=50
         )
-        st.write('You select a bin width of', bin_width, 'for the resale price distribution plot')
+        st.write('You select a bin width of', bin_width)
 
     
 

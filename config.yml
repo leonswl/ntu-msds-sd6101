@@ -8,3 +8,5 @@ prepare:
 eda:
   artifacts_path: "artifacts"
   middle_student_artifact: "middle_students_new.csv"
+  middle_student_math: "raw/middle-student-mat.csv"
+  middle_student_por: "raw/middle-student-por.csv"
