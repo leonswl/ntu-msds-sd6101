@@ -43,8 +43,6 @@ After data preparation, data will be persisted in [artifacts](artifacts) as new 
 ## Data Modelling & Analysis
 
 
-
-
 ## Contributing
 
 1. Clone the repository locally
