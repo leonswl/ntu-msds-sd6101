@@ -2,7 +2,9 @@
 
 <p align="center">
     <a href="https://www.python.org/downloads/release/python-3107/" alt="Contributors">
-        <img src="https://img.shields.io/badge/python-3.10.7-blue"/></a>
+      <img src="https://img.shields.io/badge/python-3.10.7-blue"/></a>
+    <a href="https://layonsan-hdb-resale.streamlit.app/" alt="Streamlit App">
+      <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg"/></a>
 </p>
 
 Project repository for module SD6101 (Data Science Thinking) under Masters of Science in Data Science (NTU).
