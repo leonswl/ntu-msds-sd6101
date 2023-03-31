@@ -74,6 +74,28 @@ def split_field_data(df, discrete_field_lst, cont_field_lst):
 
 def relationship():
 
+    # set configuration
+    st.set_page_config(
+        page_title="EDA Dashboard of Secondary Education Students in Portugal",
+        page_icon="🏢",
+        layout="wide",
+        initial_sidebar_state="expanded",
+        menu_items={
+            "Report a bug": "https://github.com/leonswl/ntu-msds-sd6101/issues",
+            "About": "Thanks for dropping by!"
+            }
+        )
+    
+    # return to home to fetch data 
+    if (
+        "df" not in st.session_state or 
+        "df_mat" not in st.session_state or 
+        "df_por" not in st.session_state or 
+        "y_vars" not in st.session_state or 
+        "x_vars" not in st.session_state
+    ):
+        switch_page("Main")
+
     yvars_colnames = [col for col in st.session_state.df_mat.columns if col.startswith("G")]
     xvars_colnames = [col for col in st.session_state.df_mat.columns if col not in yvars_colnames]
 
