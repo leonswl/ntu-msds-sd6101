@@ -9,8 +9,7 @@ import plotly.graph_objects as go
 @st.cache_data(ttl=300, show_spinner=False)
 def split_field_types(df, colnames_lst):
     """
-    Split the fields in a Pandas DataFrame into two lists: discrete_field_lst and cont_field_lst,
-    based on the data type of the fields.
+    Split the fields in a Pandas DataFrame into two lists: categorical_field_lst and cont_field_lst,
 
     Parameters:
     -----------
@@ -23,54 +22,47 @@ def split_field_types(df, colnames_lst):
     --------
     tuple
         A tuple containing two lists of field names:
-        1. discrete_field_lst - list of fields with 'object' data type.
+        1. categorical_field_lst - list of fields with 'object' data type.
         2. cont_field_lst - list of fields with numerical data type.
     """
-    df_dtypes = pd.DataFrame(df[colnames_lst].dtypes).rename(columns={0:'dtypes'})
+    categorical_field_lst = []
+    cont_field_lst = ['age','absences']
 
-    discrete_field_lst = []
-    cont_field_lst = []
-
-    # Loop over each field in the DataFrame
-    for field, dtype in df_dtypes.iterrows():
-        # If the data type of the field is 'object', add it to discrete_field_lst
-        if dtype[0] == 'object':
-            discrete_field_lst.append(field)
-        # Otherwise, add it to cont_field_lst
-        else:
-            cont_field_lst.append(field)
+    for col in df[colnames_lst].columns:
+        if col not in cont_field_lst:
+            categorical_field_lst.append(col)
 
     # Return the two lists as a tuple
-    return discrete_field_lst, cont_field_lst
+    return categorical_field_lst, cont_field_lst
 
 
 @st.cache_data(ttl=300, show_spinner=False)
-def split_field_data(df, discrete_field_lst, cont_field_lst):
+def split_field_data(df, categorical_field_lst, cont_field_lst):
     """
     Splits a Pandas DataFrame into two DataFrames, one containing the columns specified in the
-    discrete_field_lst argument and the other containing the columns specified in the cont_field_lst
+    categorical_field_lst argument and the other containing the columns specified in the cont_field_lst
     argument.
 
     Args:
         df (pandas.DataFrame): The DataFrame to split.
-        discrete_field_lst (list): A list of column names that should be included in the discrete
+        categorical_field_lst (list): A list of column names that should be included in the categorical
                                   DataFrame.
         cont_field_lst (list): A list of column names that should be included in the continuous
                                DataFrame.
 
     Returns:
-        tuple: A tuple containing the discrete DataFrame and the continuous DataFrame.
+        tuple: A tuple containing the categorical DataFrame and the continuous DataFrame.
 
     """
 
-    # Select the columns specified in the discrete_field_lst argument
-    df_discrete = df[discrete_field_lst]
+    # Select the columns specified in the categorical_field_lst argument
+    df_categorical = df[categorical_field_lst]
 
     # Select the columns specified in the cont_field_lst argument
     df_cont = df[cont_field_lst]
 
-    # Return a tuple containing the discrete DataFrame and the continuous DataFrame
-    return df_discrete, df_cont
+    # Return a tuple containing the categorical DataFrame and the continuous DataFrame
+    return df_categorical, df_cont
 
 def relationship():
 
@@ -126,31 +118,31 @@ def relationship():
     with st.expander(f"Expand to view {course_selection.title()} dataset"):
         st.dataframe(df_students)
 
-     # split x variables dataset into discrete and continuous
-    discrete_field_lst, cont_field_lst = split_field_types(st.session_state.df_mat, xvars_colnames)
-    df_discrete, df_cont = split_field_data(df_students, discrete_field_lst, cont_field_lst)
+     # split x variables dataset into categorical and continuous
+    categorical_field_lst, cont_field_lst = split_field_types(st.session_state.df_mat, xvars_colnames)
+    df_categorical, df_cont = split_field_data(df_students, categorical_field_lst, cont_field_lst)
 
-    # find discrete columns with only 2 unique values
-    discrete_bivals_colnames = []
-    for col in df_discrete.columns:
-        uniques = df_discrete[col].nunique()
+    # find categorical columns with only 2 unique values
+    categorical_bivals_colnames = []
+    for col in df_categorical.columns:
+        uniques = df_categorical[col].nunique()
         if uniques == 2:
-            discrete_bivals_colnames.append(col)
+            categorical_bivals_colnames.append(col)
 
-    # TABS - DISCRETE VS CONTINUOUS
-    tab1, tab2 = st.tabs(['Discrete','Continuous'])
+    # TABS - categorical VS CONTINUOUS
+    tab1, tab2 = st.tabs(['Categorical','Continuous'])
 
-    # DISCRETE TAB
+    # categorical TAB
     with tab1:
         # COLUMNS - widgets
         col1, col2, col3, col4 = st.columns([1,1,1,1])
         with col1:
-            # SELECT BOX - Discrete fields selection
-            xaxis_discrete_selection = st.selectbox(
-                label="Select discrete fields:",
-                options=discrete_field_lst
+            # SELECT BOX - categorical fields selection
+            xaxis_categorical_selection = st.selectbox(
+                label="Select categorical fields:",
+                options=categorical_field_lst
             )
-            st.markdown(f"You selected `{xaxis_discrete_selection}`")
+            st.markdown(f"You selected `{xaxis_categorical_selection}`")
 
         with col2:
             split_violin_selection = st.radio(
@@ -159,33 +151,33 @@ def relationship():
             )
         if split_violin_selection == 'Yes':
             with col3:
-                discrete_bivals_selection = st.selectbox(
+                categorical_bivals_selection = st.selectbox(
                     label="Select additional field for",
-                    options=discrete_bivals_colnames
+                    options=categorical_bivals_colnames
                 )
-                st.markdown(f"You selected `{discrete_bivals_selection}`")
+                st.markdown(f"You selected `{categorical_bivals_selection}`")
 
         if split_violin_selection == 'No':
-            fig_discrete = px.violin(
+            fig_categorical = px.violin(
                 df_students,
-                x=xaxis_discrete_selection,
+                x=xaxis_categorical_selection,
                 y=yaxis_selection,
                 points='all',
                 box=True,
             ).update_layout(
-                xaxis_title= xaxis_discrete_selection,
+                xaxis_title= xaxis_categorical_selection,
                 yaxis_title= yaxis_selection
             )
 
-            st.plotly_chart(fig_discrete, use_container_width=True)
+            st.plotly_chart(fig_categorical, use_container_width=True)
 
         else:
-            bi_values = df_students[discrete_bivals_selection].unique()
-            fig_discrete_split = go.Figure()
+            bi_values = df_students[categorical_bivals_selection].unique()
+            fig_categorical_split = go.Figure()
             
-            fig_discrete_split.add_trace(go.Violin
-                                                (x=df_students[xaxis_discrete_selection][df_students[discrete_bivals_selection]==bi_values[0]],
-                                                y=df_students[yaxis_selection][df_students[discrete_bivals_selection]==bi_values[0]],
+            fig_categorical_split.add_trace(go.Violin
+                                                (x=df_students[xaxis_categorical_selection][df_students[categorical_bivals_selection]==bi_values[0]],
+                                                y=df_students[yaxis_selection][df_students[categorical_bivals_selection]==bi_values[0]],
                                                 legendgroup='Yes', 
                                                 name=bi_values[0],
                                                 side='negative',
@@ -194,9 +186,9 @@ def relationship():
                                                 pointpos=-1.5
                                                 )
                                         )
-            fig_discrete_split.add_trace(go.Violin
-                                                (x=df_students[xaxis_discrete_selection][df_students[discrete_bivals_selection]==bi_values[1]],
-                                                y=df_students[yaxis_selection][df_students[discrete_bivals_selection]==bi_values[1]],
+            fig_categorical_split.add_trace(go.Violin
+                                                (x=df_students[xaxis_categorical_selection][df_students[categorical_bivals_selection]==bi_values[1]],
+                                                y=df_students[yaxis_selection][df_students[categorical_bivals_selection]==bi_values[1]],
                                                 legendgroup='Yes', 
                                                 name=bi_values[1],
                                                 side='positive',
@@ -205,8 +197,8 @@ def relationship():
                                                 pointpos=1.5
                                                 )
                                         )
-            fig_discrete_split.update_traces(meanline_visible=True)
-            st.plotly_chart(fig_discrete_split, use_container_width=True)
+            fig_categorical_split.update_traces(meanline_visible=True)
+            st.plotly_chart(fig_categorical_split, use_container_width=True)
 
     with tab2:
         # COLUMNS - widgets
