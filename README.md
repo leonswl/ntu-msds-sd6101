@@ -2,7 +2,9 @@
 
 <p align="center">
     <a href="https://www.python.org/downloads/release/python-3107/" alt="Contributors">
-        <img src="https://img.shields.io/badge/python-3.10.7-blue"/></a>
+      <img src="https://img.shields.io/badge/python-3.10.7-blue"/></a>
+    <a href="https://layonsan-hdb-resale.streamlit.app/" alt="Streamlit App">
+      <img src="https://static.streamlit.io/badges/streamlit_badge_black_white.svg"/></a>
 </p>
 
 Project repository for module SD6101 (Data Science Thinking) under Masters of Science in Data Science (NTU).
@@ -32,15 +34,13 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
 
 ## Data Preparation
 
-There are 647 students in the math class, and 395 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 682 students enrolled in both classes. 
+There are 647 students in the math class, and 395 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 382 students enrolled in both classes. 
 
 Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"
 
 After data preparation, data will be persisted in [artifacts](artifacts) as new artifacts.
 
 ## Data Modelling & Analysis
-
-
 
 
 ## Contributing
