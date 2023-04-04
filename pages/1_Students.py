@@ -179,53 +179,44 @@ def students():
 
     with tab3:
 
-        _extracted_from_students_118(yvars_colnames, bin_width, df_students)
+        col1, col2, col3 = st.columns([1,1,2])
+        with col1:
+            yaxis_selection = st.selectbox(
+                label="Select field for y-axis:",
+                options=yvars_colnames
+            )
 
+        with col2:
+            hist_breakdown_selection = st.selectbox(
+                label="Select field for breakdown:",
+                options=categorical_field_lst
+            )
 
-# TODO Rename this here and in `students`
-def _extracted_from_students_118(yvars_colnames, bin_width, df_students):
-    st.markdown(
-    """
-        These grades are related with the course subject, Math or Portuguese:
-        - G1: first period grade (numeric: from 0 to 20)
-        - G2: second period grade (numeric: from 0 to 20)
-        - G3: final grade (numeric: from 0 to 20, output target)
-        """
-    )
-
-    col1, col2, col3 = st.columns([1,1,2])
-    with col1:
-        yaxis_selection = st.selectbox(
-            label="Select field for y-axis:",
-            options=yvars_colnames
+        with col3:
+            # SLIDER - BIN WIDTH
+            bin_width_grades = st.slider(
+                "Select bin width",
+                min_value=5,
+                max_value=50,
+                step=5,
+                value=25,
+                key='grade'
+            )
+            st.write('You select a bin width of', bin_width)
+        # PLOTLY CHART - Histograms of Grades
+        fig_grades = px.histogram(
+            df_students,
+            x=yaxis_selection,
+            color=hist_breakdown_selection,
+            nbins=bin_width_grades,
+            text_auto=True,
+            barmode="overlay"
+        ).update_layout(
+            xaxis_title= yaxis_selection,
+            yaxis_title= "Number of Students"
         )
 
-    with col3:
-        # SLIDER - BIN WIDTH
-        bin_width_grades = st.slider(
-            "Select bin width",
-            min_value=5,
-            max_value=50,
-            step=5,
-            value=25,
-            key='grade'
-        )
-        st.write('You select a bin width of', bin_width)
-    # PLOTLY CHART - Histograms of Grades
-    fig_grades = px.histogram(
-        df_students[yvars_colnames],
-        x=yaxis_selection,
-        nbins=bin_width_grades,
-        text_auto=True
-    ).update_layout(
-        xaxis_title= yaxis_selection,
-        yaxis_title= "Number of Students"
-    )
+        st.plotly_chart(fig_grades, use_container_width=True)
 
-    st.plotly_chart(fig_grades, use_container_width=True)
-
-
-
-    
 if __name__ == "__main__":
     students()
