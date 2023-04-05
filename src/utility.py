@@ -71,7 +71,7 @@ def merge_middle_students(df_por: pd.DataFrame, df_mat: pd.DataFrame) -> pd.Data
 
 from scipy.stats import f_oneway
 
-def calculate_anova_results(array_lst, df):
+def calculate_anova_results(array_lst, df, feats):
     """
     Calculates ANOVA test results for each categorical feature in a given data matrix.
     
