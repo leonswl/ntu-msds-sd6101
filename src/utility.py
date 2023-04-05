@@ -68,3 +68,40 @@ def merge_middle_students(df_por: pd.DataFrame, df_mat: pd.DataFrame) -> pd.Data
 
     # Return the merged DataFrame
     return df_merged
+
+from scipy.stats import f_oneway
+
+def calculate_anova_results(array_lst, df, feats):
+    """
+    Calculates ANOVA test results for each categorical feature in a given data matrix.
+    
+    Parameters:
+        new_categorical_feats (list): List of categorical feature names
+        data_mat (pandas.DataFrame): Data matrix containing the categorical features
+    
+    Returns:
+        anova_res_lst (list): List of dictionaries containing ANOVA test results for each feature
+    """
+    anova_res_lst = []  # Initialize an empty list to store the results
+    
+    # Loop over all categorical features
+    for feat in feats:
+        # Extract the feature and the dependent variable (G3) from the data matrix
+        df_feats = df[[feat,'G3']]
+        # Get the unique categories for the feature
+        categories = df_feats[feat].unique()
+        # Create a list of dataframes, one for each category
+        feats_lst = [df_feats.loc[df_feats[feat]== cat] for cat in categories]
+        # Perform ANOVA test on the dataframes
+        res = f_oneway(feats_lst[0]['G3'],feats_lst[1]['G3'])
+        # Store the results in a dictionary
+        anova_dict = {
+            'variable': feat,
+            'statistic': res.statistic,
+            'pvalue': res.pvalue
+        }
+        # Append the dictionary to the results list
+        anova_res_lst.append(anova_dict)
+    
+    return anova_res_lst
+
