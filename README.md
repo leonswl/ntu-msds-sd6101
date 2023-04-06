@@ -21,7 +21,10 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
 ## Directory
 - [artifacts](artifacts): raw and persisted data artifacts
 - [dependencies](requirements.txt): python dependencies
-- [python prepare script](prepare.py): python script to perform data preparation on raw datasets
+- [Streamlit main app](main.py): python script to initialise main streamlit app
+- [notebooks](notebooks): python notebooks for various exploratory tasks
+- [src]: python scripts for modular execution
+- [configuration]: config files for modular scripts
 
 ## Data Source
 -  Student Performance Data Set
@@ -40,8 +43,19 @@ Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu
 
 After data preparation, data will be persisted in [artifacts](artifacts) as new artifacts.
 
+However, upon exploring the datasets, math middle school students were selected for analysis. This means that we only used the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv).
+
 ## Data Modelling & Analysis
 
+**EDA**
+EDA of datasets are visualised in the streamlit web app. The main pages handling the visual rendering are located in [pages](pages)
+
+Due to the huge number of features (dependent variables) available in the dataset, we focused on the following features to narrow the scope of the analysis ['school','sex','age','address','famsize','Pstatus','Medu','Fedu','Mjob', 'Fjob','reason','nursery']
+
+**Statistical Tests**
+Using the math dataset, we investigated for differences in students' grades (mean/variance) using statistical tests for the various features. Statistical tests are computed using Scipy library. The features with 2 groups, we employed t-tests. Features with more than 2 groups are tested using ANOVA. 
+
+We validated the Homogeneity of Variance assumption using the Levene test. Results revealed that comparing student grades across the groups have differing variances, and hence do not satisfy the assumption. Non parametric statistical tests were used instead - Welch's t-test and Kruskal-Wallis one-way ANOVA test.
 
 ## Contributing
 
