@@ -23,20 +23,22 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
 - [artifacts](artifacts): raw and persisted data artifacts
 - [dependencies](requirements.txt): python dependencies
 - [Streamlit main app](main.py): python script to initialise main streamlit app
-- [notebooks](notebooks): python notebooks for various exploratory tasks
+- [notebooks](notebooks): python notebooks for data preparation & statistical tests
 - [src]: python scripts for modular execution
 - [configuration]: config files for modular scripts
 
 ## Data Source
--  Student Performance Data Set
+
+-  Secondary Student Performance Data Set
    -  Obtained from [UCI Machine Learning - Student Performance](https://archive.ics.uci.edu/ml/datasets/student+performance)
    -  For more details related to column attributes, refer to the [dataset metadata](artifacts/raw/student.txt).
+   -  To view raw math Secondary Student Performance Dataset [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv) 
  
 - Higher Education Students Performance Evaluation Data Set
   - Obtained from [UCI Machine Learning - Higher Education Students Performance ](https://archive.ics.uci.edu/ml/datasets/Higher+Education+Students+Performance+Evaluation+Dataset)
   - For more details related to column attributes, refer to the [dataset metadata](artifacts/raw/higher-education-student.txt).
 
-## Data Preparation
+## Data Preparation & Cleaning
 
 There are  395 students in the math class, and 647 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 382 students enrolled in both classes. 
 
@@ -44,7 +46,10 @@ Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu
 
 After data preparation, data will be persisted in [artifacts](artifacts) as new artifacts.
 
-**However, upon exploring the datasets, math middle school students were selected for analysis. This means that we only used the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv).**
+However, upon exploring the datasets, math middle school students were selected for analysis. **This means that we only used the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv).**
+
+We conducted data cleaning with [python notebook](https://github.com/leonswl/ntu-msds-sd6101/blob/main/notebooks/Data%20Cleaning%20%26%20Preparation.ipynb)
+
 
 ## Data Modelling & Analysis
 
@@ -54,12 +59,15 @@ EDA of datasets are visualised in the streamlit web app. The main pages handling
 Due to the huge number of features (dependent variables) available in the dataset, we focused on the following features to narrow the scope of the analysis ['school','sex','age','address','famsize','Pstatus','Medu','Fedu','Mjob', 'Fjob','reason','nursery']
 
 **Statistical Tests**
+Statistical tests are located in [notebooks](notebooks). Test is shown in [Python Stats Test](https://github.com/leonswl/ntu-msds-sd6101/blob/main/notebooks/stats_tests.ipynb)
+
 Using the math dataset, we investigated for differences in students' grades (mean/variance) using statistical tests for the various features. Statistical tests are computed using Scipy library. The features with 2 groups, we employed t-tests. Features with more than 2 groups are tested using ANOVA. 
 
 We validated the Homogeneity of Variance assumption using the Levene test. Results revealed that comparing student grades across the groups have differing variances, and hence do not satisfy the assumption. Non parametric statistical tests were used instead - Welch's t-test and Kruskal-Wallis one-way ANOVA test.
 
 ## Data Visualisation & Explaination
-We summarised our key findings and visualised our data on a PowerBI Dashboard [PowerBI Dashboard](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pbix) / PDF [PDF] (https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pdf)
+
+We summarised our key findings and visualised our data on a **PowerBI Dashboard [PowerBI Dashboard](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pbix)** / PDF [PDF] (https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pdf)
 
 ## Contributing
 
