@@ -15,6 +15,7 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
   - [Data Source](#data-source)
   - [Data Preparation](#data-preparation)
   - [Data Modelling \& Analysis](#data-modelling--analysis)
+  - [Data Visualisation \& Explaination](#data-visualisation--explaination)
   - [Contributing](#contributing)
   - [Installation \& Usage](#installation--usage)
 
@@ -29,21 +30,21 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
 ## Data Source
 -  Student Performance Data Set
    -  Obtained from [UCI Machine Learning - Student Performance](https://archive.ics.uci.edu/ml/datasets/student+performance)
-   -  For more details related to column attributes, refer to the [dataset metadata](artifacts/student.txt).
+   -  For more details related to column attributes, refer to the [dataset metadata](artifacts/raw/student.txt).
  
 - Higher Education Students Performance Evaluation Data Set
   - Obtained from [UCI Machine Learning - Higher Education Students Performance ](https://archive.ics.uci.edu/ml/datasets/Higher+Education+Students+Performance+Evaluation+Dataset)
-  - For more details related to column attributes, refer to the [dataset metadata](artifacts/higher-education-student.txt).
+  - For more details related to column attributes, refer to the [dataset metadata](artifacts/raw/higher-education-student.txt).
 
 ## Data Preparation
 
-There are 647 students in the math class, and 395 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 382 students enrolled in both classes. 
+There are  395 students in the math class, and 647 students in the portuguese class. A student can take both math and portuguese class. Performing a full outer merge on identical attributes give us a total of 382 students enrolled in both classes. 
 
 Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"
 
 After data preparation, data will be persisted in [artifacts](artifacts) as new artifacts.
 
-However, upon exploring the datasets, math middle school students were selected for analysis. This means that we only used the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv).
+**However, upon exploring the datasets, math middle school students were selected for analysis. This means that we only used the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv).**
 
 ## Data Modelling & Analysis
 
@@ -57,13 +58,16 @@ Using the math dataset, we investigated for differences in students' grades (mea
 
 We validated the Homogeneity of Variance assumption using the Levene test. Results revealed that comparing student grades across the groups have differing variances, and hence do not satisfy the assumption. Non parametric statistical tests were used instead - Welch's t-test and Kruskal-Wallis one-way ANOVA test.
 
+## Data Visualisation & Explaination
+We summarised our key findings and visualised our data on a PowerBI Dashboard [PowerBI Dashboard](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pbix) / PDF [PDF] (https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pdf)
+
 ## Contributing
 
 1. Clone the repository locally
-1. Pull main branch to ensure your local main branch is up to date with the remote main branch
-1. Create a new branch using `git checkout -b <branch-name>`
-1. Merge the main branch to your working branch to keep your branch up to date with the latest changes `git merge main`
-1. Once you have saved your changes, add -> commit -> push your changes to remote branch 
+2. Pull main branch to ensure your local main branch is up to date with the remote main branch
+3. Create a new branch using `git checkout -b <branch-name>`
+4. Merge the main branch to your working branch to keep your branch up to date with the latest changes `git merge main`
+5. Once you have saved your changes, add -> commit -> push your changes to remote branch 
     ```
     # add all changes
     git add . 
@@ -77,8 +81,8 @@ We validated the Homogeneity of Variance assumption using the Levene test. Resul
     # you will be prompted to set a remote upstream if this is your first time pushing changes after creating the new branch
     git push --set-upstream origin <branch-name>
     ```
-1. Create a Pull Request to merge your changes to the main branch. 
-1. Repeat step 2 to 6 for subsequent contributions
+6. Create a Pull Request to merge your changes to the main branch. 
+7. Repeat step 2 to 6 for subsequent contributions
 
 
 ## Installation & Usage
