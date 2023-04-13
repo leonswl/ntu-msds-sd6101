@@ -32,7 +32,7 @@ Project repository for module SD6101 (Data Science Thinking) under Masters of Sc
 -  Secondary Student Performance Data Set
    -  Obtained from [UCI Machine Learning - Student Performance](https://archive.ics.uci.edu/ml/datasets/student+performance)
    -  For more details related to column attributes, refer to the [dataset metadata](artifacts/raw/student.txt).
-   -  To view raw math Secondary Student Performance Dataset, refer to the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv) 
+   -  To view raw math Secondary Student Performance Dataset, refer to the [raw math student dataset](https://github.com/leonswl/ntu-msds-sd6101/blob/main/artifacts/raw/middle-student-mat.csv) 
  
 - Higher Education Students Performance Evaluation Data Set
   - Obtained from [UCI Machine Learning - Higher Education Students Performance ](https://archive.ics.uci.edu/ml/datasets/Higher+Education+Students+Performance+Evaluation+Dataset)
@@ -46,7 +46,7 @@ Identifical attributes: "school","sex","age","address","famsize","Pstatus","Medu
 
 After data preparation, data will be persisted in [artifacts](artifacts) as new artifacts.
 
-However, upon exploring the datasets, math middle school students were selected for analysis. **This means that we only used the [raw math student dataset](/Users/leonsun/Documents/GitHub/ntu/ntu-msds-sd6101/artifacts/raw/middle-student-mat.csv).**
+However, upon exploring the datasets, math middle school students were selected for analysis. **This means that we only used the [raw math student dataset](https://github.com/leonswl/ntu-msds-sd6101/blob/main/artifacts/raw/middle-student-mat.csv).**
 
 We conducted data cleaning - shown in [python notebook.](https://github.com/leonswl/ntu-msds-sd6101/blob/main/notebooks/Data%20Cleaning%20%26%20Preparation.ipynb)
 
@@ -67,7 +67,7 @@ We validated the Homogeneity of Variance assumption using the Levene test. Resul
 
 ## Data Visualisation & Explaination
 
-We summarised our key findings and visualised our data on a **PowerBI Dashboard [PowerBI Dashboard](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pbix)** / PDF [PowerBI Dashboard PDF](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pdf) 
+We summarised our key findings and visualised our data on a **PowerBI Dashboard [PowerBI Dashboard](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pbix)** / PDF [PowerBI Dashboard PDF.](https://github.com/leonswl/ntu-msds-sd6101/blob/main/Education%20Analysis.pdf) 
 
 ## Contributing
 
